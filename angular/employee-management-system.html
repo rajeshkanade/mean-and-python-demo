@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="emsApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Management System</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .ems-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      overflow: hidden;
+    }
+    .form-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .form-group input[type="text"],
+    .form-group select {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+      transition: border-color 0.3s;
+    }
+    .form-group input[type="text"]:focus,
+    .form-group select:focus {
+      border-color: #2ed573;
+      outline: none;
+    }
+    .form-group button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #2ed573;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .form-group button:hover {
+      background: #1abc9c;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f9f9f9;
+      font-size: 1.1em;
+      color: #333;
+    }
+    td button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    td button.edit {
+      background: #4facfe;
+      color: #fff;
+    }
+    td button.edit:hover {
+      background: #00f2fe;
+    }
+    td button.delete {
+      background: #ff4757;
+      color: #fff;
+    }
+    td button.delete:hover {
+      background: #e84118;
+    }
+
+    @media (max-width: 600px) {
+      .ems-container {
+        margin: 10px;
+        padding: 15px;
+      }
+      .form-group {
+        flex-direction: column;
+      }
+      .form-group input[type="text"],
+      .form-group select {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      table {
+        font-size: 0.9em;
+      }
+      th, td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ems-container" ng-controller="EmployeeController">
+    <h2>Employee Management System</h2>
+    <div class="form-group">
+      <input type="text" ng-model="newEmployee.name" placeholder="Name">
+      <input type="text" ng-model="newEmployee.position" placeholder="Position">
+      <select ng-model="newEmployee.level">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <button ng-click="addOrUpdateEmployee()">Add Employee</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Level</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="employee in employees">
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.position }}</td>
+          <td>{{ employee.level }}</td>
+          <td>
+            <button class="edit" ng-click="editEmployee($index)">Edit</button>
+            <button class="delete" ng-click="deleteEmployee($index)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AngularJS CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script>
+    angular.module('emsApp', [])
+      .controller('EmployeeController', function($scope) {
+        $scope.employees = [
+          { name: 'John Doe', position: 'Developer', level: '2' },
+          { name: 'Jane Smith', position: 'Manager', level: '3' },
+          { name: 'Bob Johnson', position: 'Designer', level: '1' }
+        ];
+        $scope.newEmployee = { name: '', position: '', level: '1' };
+        $scope.editIndex = -1;
+
+        $scope.addOrUpdateEmployee = function() {
+          if ($scope.newEmployee.name && $scope.newEmployee.position && $scope.newEmployee.level) {
+            if ($scope.editIndex === -1) {
+              $scope.employees.push(angular.copy($scope.newEmployee));
+            } else {
+              $scope.employees[$scope.editIndex] = angular.copy($scope.newEmployee);
+              $scope.editIndex = -1;
+            }
+            $scope.newEmployee = { name: '', position: '', level: '1' };
+          }
+        };
+
+        $scope.editEmployee = function(index) {
+          $scope.editIndex = index;
+          $scope.newEmployee = angular.copy($scope.employees[index]);
+        };
+
+        $scope.deleteEmployee = function(index) {
+          $scope.employees.splice(index, 1);
+        };
+      });
+  </script>
+</body>
+</html>

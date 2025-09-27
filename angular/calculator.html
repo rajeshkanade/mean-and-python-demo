@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calculator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .calculator-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      text-align: center;
+
+    }
+    .display {
+      width: 90%;
+      height: 60px;
+      font-size: 1.5em;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #f0f0f0;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      padding: 15px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      background: #4facfe;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background: #00f2fe;
+      transform: scale(1.05);
+    }
+    button.operator {
+      background: #ff6b6b;
+    }
+    button.operator:hover {
+      background: #ff4757;
+    }
+    button.clear {
+      background: #ff9f43;
+    }
+    button.clear:hover {
+      background: #ff8c37;
+    }
+    button.equals {
+      background: #2ed573;
+      grid-column: span 2;
+    
+    }
+    button.equals:hover {
+      background: #1abc9c;
+    }
+
+    @media (max-width: 400px) {
+      .calculator-container {
+        width: 250px;
+        padding: 15px;
+      }
+      .display {
+        height: 50px;
+        font-size: 1.2em;
+      }
+      button {
+        padding: 12px;
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div ng-app="calculatorApp" ng-controller="CalculatorController">
+    <div class="calculator-container">
+      <input type="text" class="display" ng-model="display" readonly>
+      <div class="buttons">
+        <button class="clear" ng-click="clearDisplay()">C</button>
+        <button class="operator" ng-click="appendToDisplay('/')">/</button>
+        <button class="operator" ng-click="appendToDisplay('*')">×</button>
+        <button class="operator" ng-click="appendToDisplay('-')">-</button>
+        <button ng-click="appendToDisplay('7')">7</button>
+        <button ng-click="appendToDisplay('8')">8</button>
+        <button ng-click="appendToDisplay('9')">9</button>
+        <button class="operator" ng-click="appendToDisplay('+')">+</button>
+        <button ng-click="appendToDisplay('4')">4</button>
+        <button ng-click="appendToDisplay('5')">5</button>
+        <button ng-click="appendToDisplay('6')">6</button>
+        <button ng-click="appendToDisplay('.')">.</button>
+        <button ng-click="appendToDisplay('1')">1</button>
+        <button ng-click="appendToDisplay('2')">2</button>
+        <button ng-click="appendToDisplay('3')">3</button>
+        <button ng-click="appendToDisplay('0')">0</button>
+        <button class="equals" ng-click="calculate()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AngularJS CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script>
+    angular.module('calculatorApp', [])
+      .controller('CalculatorController', function($scope) {
+        $scope.display = '';
+
+        $scope.appendToDisplay = function(value) {
+          $scope.display += value;
+        };
+
+        $scope.clearDisplay = function() {
+          $scope.display = '';
+        };
+
+        $scope.calculate = function() {
+          try {
+            $scope.display = eval($scope.display) || 'Error';
+          } catch (e) {
+            $scope.display = 'Error';
+          }
+        };
+      });
+  </script>
+</body>
+</html>
