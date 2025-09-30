@@ -1,27 +1,36 @@
-# A company wants to maintain employee records in a file. Each record has
-# emp_id, name, designation, salary. Write Python code to:
-# - Add new employee records
-# - Search for an employee by ID
-# - Display all employees earning more than 50,000
+employees = {}
 
-import json
+def add_employee(emp_id, emp_name, emp_salary):
+    employees[emp_id] = {
+        "name": emp_name,
+        "salary": emp_salary
+    }
 
-# Initialize empty employee records
-employee_records = {}
+def get_employee_by_id(emp_id):
+    if emp_id in employees:
+        return employees[emp_id]
+    else:
+        return "Employee not found."
 
-def add_employee(emp_id, name, designation, salary):
-    employee_records[emp_id] = {"name": name, "designation": designation, "salary": salary}
-    with open("employees.json", "w") as file:
-        json.dump(employee_records, file)
+def get_high_salary_employees():
+    print("\nEmployees earning more than 50,000:")
+    for emp_id in employees:
+        if employees[emp_id]['salary'] > 50000:
+            print(f"ID: {emp_id}, Name: {employees[emp_id]['name']}, Salary: {employees[emp_id]['salary']}")
 
-def search_by_id(emp_id):
-    return employee_records.get(emp_id, "Employee not found")
+# --- Main program ---
+n = int(input("Enter number of employees: "))
 
-def search_high_salary():
-    return [emp for emp_id, emp in employee_records.items() if emp["salary"] > 50000]
+for i in range(n):
+    print(f"\nEnter details for Employee {i+1}:")
+    emp_id = input("Employee ID: ")
+    emp_name = input("Employee Name: ")
+    emp_salary = float(input("Employee Salary: "))
+    add_employee(emp_id, emp_name, emp_salary)
 
-# Example usage
-add_employee("E001", "Alice", "Manager", 60000)
-add_employee("E002", "Bob", "Developer", 40000)
-print(search_by_id("E001"))
-print(search_high_salary())
+# Display employees with salary > 50,000
+get_high_salary_employees()
+
+# Search employee by ID
+emp_id_search = input("\nEnter employee ID to search: ")
+print(get_employee_by_id(emp_id_search))

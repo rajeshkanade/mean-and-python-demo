@@ -1,30 +1,34 @@
-list = [4,2,45,2,3,2,3,4,8]
+def process_list(lst):
+    # Find min and max
+    min_val = lst[0]
+    max_val = lst[0]
+    for i in lst:
+        if i < min_val:
+            min_val = i
+        if i > max_val:
+            max_val = i
+    print(f"Min : {min_val}, Max : {max_val}")
 
-# for i in range(1 , 11) : 
-#     list.append(i);
+    # Reverse the list
+    reversed_list = lst[::-1]
+    print("Reversed List:", reversed_list)
 
-# print(list)
+    # Remove duplicates
+    hash_list = []
+    unique_list = []
+    for i in lst:
+        if i not in hash_list:
+            hash_list.append(i)
+            unique_list.append(i)
+        else:
+            continue
+    print("Unique List:", unique_list)
 
 
-min = list[0] 
-max = list[0]
-for i in list : 
-    if i < min : 
-        min = i
-    if i > max : 
-        max = i
+# Main program
+# Taking input from user
+user_input = input("Enter numbers separated by spaces: ")
+numbers = [int(x) for x in user_input.split()]
 
-print(f"Min : {min} , Max : {max}")
-
-reversed = list[::-1]
-print(reversed)
-
-hash = [] 
-for i in list : 
-    if i not in hash : 
-        hash.append(i)
-    else : 
-        list.remove(i)
-
-print("Unique list : " , list)
-
+# Calling the function
+process_list(numbers)

@@ -1,9 +1,3 @@
-# A library system needs a Book class with the attributes title, author, copies_available.
-# Implement methods:
-# - borrow_book() (decrease copy count if available)
-# - return_book() (increase copy count)
-# - display_info()
-
 class Book:
     def __init__(self, title, author, copies):
         self.title = title
@@ -13,19 +7,39 @@ class Book:
     def borrow_book(self):
         if self.copies > 0:
             self.copies -= 1
-            return True
-        return False
+            print("Book borrowed successfully!")
+        else:
+            print("Sorry, no copies available.")
     
     def return_book(self):
         self.copies += 1
+        print("Book returned successfully!")
     
     def display_info(self):
-        return f"Title: {self.title}, Author: {self.author}, Copies: {self.copies}"
+        print(f"Title: {self.title}")
+        print(f"Author: {self.author}")
+        print(f"Copies Available: {self.copies}")
 
-# Example usage
-book = Book("Python Basics", "John Doe", 5)
-print(book.display_info())
-book.borrow_book()
-print(book.display_info())
-book.return_book()
-print(book.display_info())
+
+# --- Main program ---
+title = input("Enter book title: ")
+author = input("Enter author name: ")
+copies = int(input("Enter number of copies: "))
+
+book = Book(title, author, copies)
+
+print("\nBook Information:")
+book.display_info()
+
+# Borrow or return
+choice = input("\nDo you want to borrow or return the book? (borrow/return): ").strip().lower()
+
+if choice == "borrow":
+    book.borrow_book()
+elif choice == "return":
+    book.return_book()
+else:
+    print("Invalid choice.")
+
+print("\nUpdated Book Information:")
+book.display_info()
